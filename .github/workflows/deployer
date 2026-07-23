@@ -25,14 +25,8 @@ jobs:
 
       - name: Update Application Container (Zero-Downtime Design)
         run: |
-          # 1. Pull the requested image tag safely
+   
           docker pull ghcr.io/${{ github.repository }}/testing-pipe-web:${{ github.event.inputs.image_tag }}
-          
-          # 2. Stop and clear out the old container instance
-          docker rm -f pipeline-web-live || true
-          
-          # 3. Spin up the new chosen container
+          docker rm -f pipeline-web-live || true        
           docker run -d -p 8080:80 --name pipeline-web-live ghcr.io/${{ github.repository }}/testing-pipe-web:${{ github.event.inputs.image_tag }}
-          
-          # 4. Wipe out dead dangling layers
           docker image prune -f
