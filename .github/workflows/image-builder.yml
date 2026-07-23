@@ -42,5 +42,4 @@ jobs:
         with:
           context: .
           push: true
-          # We tag it with the specific branch name so the deployer knows which one it is
-          tags: ghcr.io/${{ github.repository }}/testing-pipe-web:${{ github.event.inputs.source_branch }}
+          tags: ghcr.io/${{ github.repository_owner }}/testing-pipe-web:${{ github.event.inputs.source_branch }}
