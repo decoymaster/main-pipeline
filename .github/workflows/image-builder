@@ -1,4 +1,4 @@
-name:image-builder
+name:Image-builder
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
       - name: Verify Approval Input
         run: |
           if [ "${{ github.event.inputs.approval_word }}" != "build" ]; then
-            echo "❌ Aborting: Invalid approval token provided."
+            echo " Aborting: Invalid approval token provided."
             exit 1
           fi
 
