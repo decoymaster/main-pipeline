@@ -23,11 +23,12 @@ jobs:
             exit 1
           fi
 
-      - name: Checkout Code
+      - name: Checkout Target App Repository
         uses: actions/checkout@v4
         with:
+          repository: ${{ github.repository_owner }}/testing-pipe
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ORGANIZATION_ADMIN_TOKEN }}
 
       - name: Execute Git Merge
         run: |
