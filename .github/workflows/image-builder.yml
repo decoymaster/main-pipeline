@@ -1,4 +1,4 @@
-name:Image-builder
+name: Image-builder
 
 on:
   workflow_dispatch:
