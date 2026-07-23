@@ -1,4 +1,4 @@
-name: 📦 Manual Step 2 - Approve & Build Image
+name:image-builder
 
 on:
   workflow_dispatch:
