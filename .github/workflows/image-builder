@@ -1,0 +1,44 @@
+name: 📦 Manual Step 2 - Approve & Build Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval_word:
+        description: "Type 'build' to authorize container compilation"
+        required: true
+        type: string
+      source_branch:
+        description: "Branch to build from (e.g., main or branch-A)"
+        required: true
+        default: "main"
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Approval Input
+        run: |
+          if [ "${{ github.event.inputs.approval_word }}" != "build" ]; then
+            echo "❌ Aborting: Invalid approval token provided."
+            exit 1
+          fi
+
+      - name: Checkout Targeted Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source_branch }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Custom Tagged Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # We tag it with the specific branch name so the deployer knows which one it is
+          tags: ghcr.io/${{ github.repository }}/testing-pipe-web:${{ github.event.inputs.source_branch }}
