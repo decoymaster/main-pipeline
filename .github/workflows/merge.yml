@@ -1,4 +1,4 @@
-name: merging pipeline
+name: merge to main
 
 on:
   workflow_dispatch:
