@@ -1,4 +1,4 @@
-name: merge to main
+name:Merger( to main )
 
 on:
   workflow_dispatch:
