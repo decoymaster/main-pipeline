@@ -1,0 +1,38 @@
+name: merging pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval_word:
+        description: "Type 'merge' to authorize this branch integration"
+        required: true
+        type: string
+      target_branch:
+        description: "Name of the feature branch you want to merge into main"
+        required: true
+        default: "branch-A"
+
+jobs:
+  validate-and-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Approval Input
+        run: |
+          if [ "${{ github.event.inputs.approval_word }}" != "merge" ]; then
+            echo " Aborting: Invalid approval token provided."
+            exit 1
+          fi
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Execute Git Merge
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git checkout main
+          git merge origin/${{ github.event.inputs.target_branch }} --no-ff -m "Manual DevOps merge from branch: ${{ github.event.inputs.target_branch }}"
+          git push origin main
