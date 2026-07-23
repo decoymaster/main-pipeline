@@ -26,7 +26,7 @@ jobs:
       - name: Update Application Container (Zero-Downtime Design)
         run: |
    
-          docker pull ghcr.io/${{ github.repository }}/testing-pipe-web:${{ github.event.inputs.image_tag }}
+          docker pull ghcr.io/${{ github.repository_owner }}/testing-pipe-web:${{ github.event.inputs.image_tag }}
           docker rm -f pipeline-web-live || true        
           docker run -d -p 8080:80 --name pipeline-web-live ghcr.io/${{ github.repository_owner }}/testing-pipe-web:${{ github.event.inputs.image_tag }}
           docker image prune -f
